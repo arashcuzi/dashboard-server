@@ -20,11 +20,21 @@ app.get('/', (req, res) => {
 // Setup the Event Emitter
 const ee = new events.EventEmitter();
 
+// Post Anything
 app.post('/post-anything', (req, res) => {
   ee.emit('POST_ANYTHING', req.body);
   res.json({
     status: 'success',
     message: req.body.message,
+  });
+});
+
+// Build Status
+app.post('/build-status', (req, res) => {
+  ee.emit('BUILD_STATUS', req.body);
+  res.json({
+    status: 'success',
+    body: req.body
   });
 });
 
@@ -60,6 +70,19 @@ ee.on('POST_ANYTHING', (data) => {
     payload: data,
   };
   
+  clients.forEach((client) => {
+    client.send(JSON.stringify(action));
+  });
+});
+
+// Handle BUILD_STATUS
+ee.on('BUILD_STATUS', (data) => {
+  const clients = ws.getWss().clients;
+  const action = {
+    type: 'BUILD_STATUS',
+    payload: data,
+  };
+
   clients.forEach((client) => {
     client.send(JSON.stringify(action));
   });
