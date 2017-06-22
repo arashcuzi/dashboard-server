@@ -24,6 +24,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "express-ws": "^3.0.0",
     "nodemon": "^1.11.0",

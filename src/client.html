@@ -6,15 +6,15 @@
     Server Up!
     <script>
       // Just for demo
-      // // Set up the root
-      // var root = document.createElement('div');
-      // document.body.appendChild(root);
+      // Set up the root
+      var root = document.createElement('div');
+      document.body.appendChild(root);
 
-      // // Set up the websocket.
-      // var s = new WebSocket('ws://'+window.location.host+'/');
-      // s.addEventListener('message', function (m) {
-      //   root.innerHTML += `<p>${m.data}</p>`;
-      // });
+      // Set up the websocket.
+      var s = new WebSocket('ws://'+window.location.host+'/');
+      s.addEventListener('message', function (m) {
+        root.innerHTML += `<p>${m.data}</p>`;
+      });
     </script>
   </body>
 </html>

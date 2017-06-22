@@ -1,20 +1,63 @@
 import path from 'path';
 import express from 'express';
-import ws from 'express-ws';
+import WS from 'express-ws';
+import bp from 'body-parser';
+import events from 'events';
 
 const app = express();
 
-// Add express-ws middleware.
-ws(app);
+// Add middleware.
+const ws = WS(app);
 
+// parse application/json
+app.use(bp.json());
+
+// Default route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'client.html'));
 });
 
+// Setup the Event Emitter
+const ee = new events.EventEmitter();
+
+app.get('/post-anything', (req, res) => {
+  ee.emit('POST_ANYTHING', req.query.message);
+  res.json({
+    status: 200,
+    message: 'success'
+  });
+});
+
+// Way to kill all connections.
+app.get('/kill-all', (req, res) => {
+  const clients = ws.getWss().clients;
+  const length = clients.size;
+
+  clients.forEach((client) => {
+    client.send('Disconnecting You!');
+    client.terminate();
+  });
+
+  res.send(`Killed ${length}`);
+});
+
+// Set up the connection URL
 app.ws('/', (s, req) => {
-  console.error('websocket connection');
-  for (var t = 0; t < 3; t++)
-    setTimeout(() => s.send('message from server', ()=>{}), 1000*t);
+  s.send(`Connected!`);
+});
+
+ws.getWss().on('connection', (s) => {
+  const clients = ws.getWss().clients;
+  console.log('New Connection!');
+  console.log(`There are ${clients.size}`);
+});
+
+// Setup listener for post-anything
+ee.on('POST_ANYTHING', (e) => {
+  const clients = ws.getWss().clients;
+  clients.forEach((client) => {
+    client.send(e);
+  });
 });
 
 app.listen(3001, () => console.log('listening on localhost:3001'));
