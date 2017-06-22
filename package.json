@@ -11,14 +11,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jesselee34/dashboard-server.git"
+    "url": "git+https://github.com/arashcuzi/dashboard-server.git"
   },
   "author": "Jesse Lee Schmucker",
+  "contributors": [
+    {
+      "name" : "Shawn Petros",
+      "email" : "arashcuzi@gmail.com",
+      "url" : "https://github.com/arashcuzi"
+    }
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jesselee34/dashboard-server/issues"
+    "url": "https://github.com/arashcuzi/dashboard-server/issues"
   },
-  "homepage": "https://github.com/jesselee34/dashboard-server#readme",
+  "homepage": "https://github.com/arashcuzi/dashboard-server#readme",
   "dependencies": {
     "babel-cli": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
