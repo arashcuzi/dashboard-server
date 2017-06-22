@@ -20,11 +20,11 @@ app.get('/', (req, res) => {
 // Setup the Event Emitter
 const ee = new events.EventEmitter();
 
-app.get('/post-anything', (req, res) => {
-  ee.emit('POST_ANYTHING', req.query.message);
+app.post('/post-anything', (req, res) => {
+  ee.emit('POST_ANYTHING', req.body);
   res.json({
-    status: 200,
-    message: 'success'
+    status: 'success',
+    message: req.body.message,
   });
 });
 
@@ -43,7 +43,7 @@ app.get('/kill-all', (req, res) => {
 
 // Set up the connection URL
 app.ws('/', (s, req) => {
-  s.send(`Connected!`);
+  s.send('{"message": "Connected!"}');
 });
 
 ws.getWss().on('connection', (s) => {
@@ -53,10 +53,15 @@ ws.getWss().on('connection', (s) => {
 });
 
 // Setup listener for post-anything
-ee.on('POST_ANYTHING', (e) => {
+ee.on('POST_ANYTHING', (data) => {
   const clients = ws.getWss().clients;
+  const action = {
+    type: 'POST_ANYTHING',
+    payload: data,
+  };
+  
   clients.forEach((client) => {
-    client.send(e);
+    client.send(JSON.stringify(action));
   });
 });
 
