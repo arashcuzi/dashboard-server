@@ -1,0 +1,19 @@
+{
+  "name": "dashboard-server",
+  "version": "1.0.0",
+  "description": "server app to feed dashboard-client all the datas",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesselee34/dashboard-server.git"
+  },
+  "author": "Jesse Lee Schmucker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jesselee34/dashboard-server/issues"
+  },
+  "homepage": "https://github.com/jesselee34/dashboard-server#readme"
+}
