@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/jesselee34/dashboard-server/issues"
   },
-  "homepage": "https://github.com/jesselee34/dashboard-server#readme"
+  "homepage": "https://github.com/jesselee34/dashboard-server#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "express-ws": "^3.0.0",
+    "tap-difflet": "^0.7.0",
+    "tape": "^4.6.3"
+  }
 }
