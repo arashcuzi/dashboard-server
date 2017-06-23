@@ -25,6 +25,7 @@ app.post('/post-anything', (req, res) => {
   res.json({
     status: 'success',
     message: req.body.message,
+    user: req.body.user
   });
 });
 
@@ -59,7 +60,7 @@ ee.on('POST_ANYTHING', (data) => {
     type: 'POST_ANYTHING',
     payload: data,
   };
-  
+
   clients.forEach((client) => {
     client.send(JSON.stringify(action));
   });
