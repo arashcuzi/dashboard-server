@@ -1,0 +1,14 @@
+---
+sudo: required
+services:
+- docker
+language: node_js
+node_js:
+- 7
+cache:
+  directories:
+  - node_modules
+script:
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- docker build -t arashcuzi/dashboard-server .
+- docker push arashcuzi/dashboard-server

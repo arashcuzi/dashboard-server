@@ -20,22 +20,11 @@ app.get('/', (req, res) => {
 // Setup the Event Emitter
 const ee = new events.EventEmitter();
 
-// Post Anything
 app.post('/post-anything', (req, res) => {
   ee.emit('POST_ANYTHING', req.body);
   res.json({
     status: 'success',
-    message: req.body.message,
-    user: req.body.user
-  });
-});
-
-// Build Status
-app.post('/build-status', (req, res) => {
-  ee.emit('BUILD_STATUS', req.body);
-  res.json({
-    status: 'success',
-    body: req.body
+    message: req.body.message
   });
 });
 
@@ -44,7 +33,7 @@ app.get('/kill-all', (req, res) => {
   const clients = ws.getWss().clients;
   const length = clients.size;
 
-  clients.forEach((client) => {
+  clients.forEach(client => {
     client.send('Disconnecting You!');
     client.terminate();
   });
@@ -57,34 +46,21 @@ app.ws('/', (s, req) => {
   s.send('{"message": "Connected!"}');
 });
 
-ws.getWss().on('connection', (s) => {
+ws.getWss().on('connection', s => {
   const clients = ws.getWss().clients;
   console.log('New Connection!');
   console.log(`There are ${clients.size}`);
 });
 
 // Setup listener for post-anything
-ee.on('POST_ANYTHING', (data) => {
+ee.on('POST_ANYTHING', data => {
   const clients = ws.getWss().clients;
   const action = {
     type: 'POST_ANYTHING',
-    payload: data,
+    payload: data
   };
 
-  clients.forEach((client) => {
-    client.send(JSON.stringify(action));
-  });
-});
-
-// Handle BUILD_STATUS
-ee.on('BUILD_STATUS', (data) => {
-  const clients = ws.getWss().clients;
-  const action = {
-    type: 'BUILD_STATUS',
-    payload: data,
-  };
-
-  clients.forEach((client) => {
+  clients.forEach(client => {
     client.send(JSON.stringify(action));
   });
 });
