@@ -39,6 +39,15 @@ app.post('/build-status', (req, res) => {
   });
 });
 
+// E2E Status
+app.post('/e2e-status', (req, res) => {
+  ee.emit('E2E_STATUS', req.body);
+  res.json({
+    status: 'success',
+    body: req.body
+  });
+});
+
 // Way to kill all connections.
 app.get('/kill-all', (req, res) => {
   const clients = ws.getWss().clients;
@@ -81,6 +90,19 @@ ee.on('BUILD_STATUS', (data) => {
   const clients = ws.getWss().clients;
   const action = {
     type: 'BUILD_STATUS',
+    payload: data,
+  };
+
+  clients.forEach((client) => {
+    client.send(JSON.stringify(action));
+  });
+});
+
+// Handle BUILD_STATUS
+ee.on('E2E_STATUS', (data) => {
+  const clients = ws.getWss().clients;
+  const action = {
+    type: 'E2E_STATUS',
     payload: data,
   };
 
